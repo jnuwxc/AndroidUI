@@ -36,12 +36,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ConstraintLayoutActivtiy.class);
             startActivity(intent);
         });
-
-        // 创建新分支测试
-        // git diff 测试
-        // 远程仓库更改
-
-        // master修改内容
+        
     }
 
 }
