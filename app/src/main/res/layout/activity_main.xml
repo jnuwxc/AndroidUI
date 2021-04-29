@@ -28,4 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="约束布局演示"/>
+
+    <Button
+        android:id="@+id/basicView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="基础view演示(登录界面)"/>
 </LinearLayout>

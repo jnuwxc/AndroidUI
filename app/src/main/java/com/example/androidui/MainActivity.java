@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        Button basicViewBtn = findViewById(R.id.basicView);
+        basicViewBtn.setOnClickListener(it->{
+            Intent intent = new Intent(this, BasicViewActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
