@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, BasicViewActivity.class);
             startActivity(intent);
         });
+
+        Button mdBtn = findViewById(R.id.md);
+        mdBtn.setOnClickListener(it->{
+            Intent intent = new Intent(this, MaterialDesignActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
