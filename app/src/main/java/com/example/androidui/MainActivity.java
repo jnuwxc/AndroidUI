@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MaterialDesignActivity.class);
             startActivity(intent);
         });
+
+        Button listViewBtn = findViewById(R.id.listView);
+        listViewBtn.setOnClickListener(it->{
+            Intent intent = new Intent(this, ListViewActivity.class);
+            startActivity(intent);
+        });
     }
 
 }

@@ -39,6 +39,14 @@
         android:id="@+id/md"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAllCaps="false"
         android:text="MaterialDesign"/>
+
+    <Button
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="ListView"/>
 
 </LinearLayout>
