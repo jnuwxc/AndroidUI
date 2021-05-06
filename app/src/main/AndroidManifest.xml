@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidUI">
-        <activity android:name=".RecylcerViewActivity"></activity>
+        <activity android:name=".ViewPagerActivity"></activity>
+        <activity android:name=".RecylcerViewActivity" />
         <activity android:name=".ListViewActivity" />
         <activity android:name=".MaterialDesignActivity" />
         <activity android:name=".BasicViewActivity" />

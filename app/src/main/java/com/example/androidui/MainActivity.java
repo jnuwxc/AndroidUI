@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RecylcerViewActivity.class);
             startActivity(intent);
         });
+
+        Button viewPagerBtn = findViewById(R.id.viewPager);
+        viewPagerBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ViewPagerActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
