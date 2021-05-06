@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ListViewActivity.class);
             startActivity(intent);
         });
+
+        Button recyclerViewBtn = findViewById(R.id.recyclerView);
+        recyclerViewBtn.setOnClickListener(it->{
+            Intent intent = new Intent(this, RecylcerViewActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
