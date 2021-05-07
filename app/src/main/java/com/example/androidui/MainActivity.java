@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ViewPagerActivity.class);
             startActivity(intent);
         });
+
+        Button tweenBtn = findViewById(R.id.tween);
+        tweenBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this, TweenActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
