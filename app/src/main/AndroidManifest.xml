@@ -14,7 +14,9 @@
         <activity android:name=".ViewPagerActivity" />
         <activity android:name=".RecylcerViewActivity" />
         <activity android:name=".ListViewActivity" />
-        <activity android:name=".MaterialDesignActivity" />
+        <activity android:name=".MaterialDesignActivity"
+            android:theme="@style/Theme.MaterialActivity"
+            android:label="MD"/>
         <activity android:name=".BasicViewActivity" />
         <activity android:name=".ConstraintLayoutActivtiy" />
         <activity android:name=".FrameLayoutActivity" />
