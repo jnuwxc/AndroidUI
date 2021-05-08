@@ -70,4 +70,12 @@
         android:textAllCaps="false"
         android:text="tween"
         />
+
+    <Button
+        android:id="@+id/swipeRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="SwipeRefreshLayout"
+        />
 </LinearLayout>

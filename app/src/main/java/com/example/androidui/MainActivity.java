@@ -72,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, TweenActivity.class);
             startActivity(intent);
         });
+
+        Button swipeRefreshBtn = findViewById(R.id.swipeRefresh);
+        swipeRefreshBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this, SwipeRefreshLayoutActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
