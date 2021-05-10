@@ -1753,3 +1753,180 @@ drawerLayout.openDrawer(GravityCompat.START);
 implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 ```
 
+## 自定义view
+
+这部分内容涉及到安卓view绘制体系的底层，不可能一蹴而就，慢慢完善补充吧。
+
+View的绘制基本由measure()、layout()、draw()这个三个函数完成
+
+| 函数      | 作用                         | 相关方法                                     |
+| --------- | ---------------------------- | -------------------------------------------- |
+| measure() | 测量View的宽高               | measure(),setMeasuredDimension(),onMeasure() |
+| layout()  | 计算当前View以及子View的位置 | layout(),onLayout(),setFrame()               |
+| draw()    | 视图的绘制工作               | draw(),onDraw()                              |
+
+### 继承view子类/viewGroup子类
+
+通过继承系统控件来完成自定义View，一般是希望在原有系统控件基础上做一些修饰性的修改，而不会做大幅度的改动。如在TextView的文字下方添加下划线等，一般会重写`onDraw()`方法。但是这一节需要对Canvas，paint等绘制方面的知识有一定的了解，且还需要对ViewGroup的中内容的绘制顺序有一定的了解，才能在原生控件的基础上做出想要的效果来。
+
+如下示例为在TextView文字下方显示红色下划线。
+
+```java
+@SuppressLint("AppCompatCustomView")
+public class UnderlineTextView extends TextView{
+    public UnderlineTextView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(5);
+        int width = getWidth();
+        int height = getBaseline();
+        canvas.drawLine(0,height,width,height,paint);
+    }
+}
+```
+
+### 继承view / viewGroup
+
+自绘控件是最复杂的，因为所有的绘制逻辑和流程都需要自己完成。采用自绘控件这种方式时，如果自定义View为最终的叶子控件，那么需要直接继承View；而不过自定义View为容器类控件，则需要直接继承ViewGroup。
+
+自绘View控件时，最主要工作就是绘制出丰富的内容，这一过程是在重写的onDraw方法中实现的。由于是view，它没有子控件了，所以重写onLayout没有意义。onMeasure的方法可以根据自己的需要来决定是否需要重写，很多情况下，不重写该方法并不影响正常的绘制。
+
+```java
+public class HistogramView extends View{
+
+    private Paint mPaint;
+    private Path mPath;
+
+    public HistogramView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        mPaint = new Paint();
+        mPath = new Path();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        //绘制坐标轴
+        mPaint.reset();
+        mPath.reset();
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPath.moveTo(100,100);
+        mPath.rLineTo(0,402);
+        mPath.rLineTo(800,0);
+        canvas.drawPath(mPath,mPaint);
+        //绘制文字
+        mPaint.reset();
+        mPaint.setTextSize(30);
+        mPaint.setStyle(Paint.Style.FILL);
+        canvas.drawText("Froyo",160,540,mPaint);
+        canvas.drawText("CB",280,540,mPaint);
+        canvas.drawText("ICS",380,540,mPaint);
+        canvas.drawText("J",480,540,mPaint);
+        canvas.drawText("KitKat",560,540,mPaint);
+        canvas.drawText("L",690,540,mPaint);
+        canvas.drawText("M",790,540,mPaint);
+        //绘制直方图，柱形图是用较粗的直线来实现的
+        mPaint.reset();
+        mPaint.setColor(Color.GREEN);
+        mPaint.setStrokeWidth(80);
+        float[] lines3={
+                200,500,200,495,
+                300,500,300,480,
+                400,500,400,480,
+                500,500,500,300,
+                600,500,600,200,
+                700,500,700,150,
+                800,500,800,350,
+        };
+        canvas.drawLines(lines3,mPaint);
+    }
+}
+```
+
+ 自绘ViewGroup控件，需要直接继承ViewGroup，在该系列第一篇文章中将绘制流程的时候就讲过，onLayout是ViewGroup中的抽象方法，其直接继承者必须实现该方法。所以这里，onLayout方法必须要实现的，如果这里面的方法体为空，那该控件的子view就无法显示了。要想准确测量，onMeasure方法也是要重写的。
+
+```java
+public class CustomLayout extends ViewGroup {
+    public CustomLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (getChildCount() > 0) {
+            //只测量第一个child
+            View child = getChildAt(0);
+            measureChild(child, widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (getChildCount() > 0) {
+            //只布局第一个child
+            View child = getChildAt(0);
+            child.layout(0, 0, child.getMeasuredWidth(), child.getMeasuredHeight());
+        }
+    }
+}
+```
+
+### 自定义view使用自定义属性
+
+在values中编写需要的属性。在res/values/下新建资源文件，这里咱们命名为attrs.xml，在其中编写所需要的属性
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HistogramView">
+        <attr name="textColor" format="color"/>
+        <attr name="histogramColor" format="color"/>
+    </declare-styleable>
+</resources>
+```
+
+这里`<declare-styleable>`中的name是自行命名的，可以理解为这个自定义属性集合的名称。代码中包含了两个自定义属性，名称分别为“textColor”和“histogramColor”，这里用来设置直方图中文字的颜色和直方图的颜色。format表示的是属性的格式，这里均设置为“color”，表示对应的属性是用来设置颜色值的。
+
+然后在自定义view的逻辑中进行调整：
+
+```java
+public class HistogramView extends View{
+
+    private Paint mPaint;
+    private Path mPath;
+    private int mTextColor,mHistogramColor;
+
+    public HistogramView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        mPaint = new Paint();
+        mPath = new Path();
+        initAttrs(context,attrs);
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs){
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.HistogramView);
+        mTextColor = typedArray.getColor(R.styleable.HistogramView_textColor,Color.BLACK);
+        mHistogramColor = typedArray.getColor(R.styleable.HistogramView_histogramColor,Color.GREEN);
+        typedArray.recycle();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        ......
+        mPaint.setColor(Color.BLACK);
+      	......
+        mPaint.setColor(mTextColor);
+		......
+    }
+}
+```
+

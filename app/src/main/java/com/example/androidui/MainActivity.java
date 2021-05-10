@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SwipeRefreshLayoutActivity.class);
             startActivity(intent);
         });
+
+        Button customizeViewBtn = findViewById(R.id.customizeView);
+        customizeViewBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CustomizeActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
