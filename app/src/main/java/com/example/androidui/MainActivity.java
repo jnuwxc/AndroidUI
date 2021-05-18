@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button linearLayoutBtn = findViewById(R.id.linearLayout);
         linearLayoutBtn.setOnClickListener(it->{
-            Intent intent = new Intent(this, LinearLayoutActivity.class);
+            Intent intent = new Intent(this, TestActivity.class);
             startActivity(intent);
         });
 
